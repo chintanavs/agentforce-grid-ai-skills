@@ -1,0 +1,320 @@
+{
+  "skill_name": "agentforce-grid",
+  "description": "Grid Column Suggestion evaluation suite based on Grid Column Suggestion Evals criteria",
+  "evals": [
+    {
+      "id": 1,
+      "name": "sales-rep-opportunity-risk",
+      "prompt": "I'm a sales rep looking at my open opportunities. I have a Grid worksheet with Column A: Opportunities (Object) with StageName, Amount, CloseDate, Probability, NextStep, LastActivityDate fields, and Column B: Opportunities.Amount (Reference). I need help figuring out which deals are at risk. What column should I add?",
+      "context": {
+        "userRole": "Sales Rep",
+        "gridState": {
+          "columns": [
+            {"name": "Opportunities", "type": "Object", "id": "col-A", "fields": ["StageName", "Amount", "CloseDate", "Probability", "NextStep", "LastActivityDate"]},
+            {"name": "Amount", "type": "Reference", "id": "col-B", "referencesColumn": "col-A", "referenceField": "Amount"}
+          ]
+        }
+      },
+      "expected_output": "AI column with SINGLE_SELECT response format (Low Risk/Medium Risk/High Risk), referencing Column A, with a prompt that analyzes stage, amount, close date proximity, probability, and last activity",
+      "expectations": [
+        "Suggests an AI column (not Formula or Reference)",
+        "Uses SINGLE_SELECT response format with risk level options",
+        "References Column A (Opportunities) via referenceAttributes",
+        "Does not reference any column that doesn't exist (no hallucinated refs)",
+        "Prompt mentions specific fields: stage, amount, close date, probability, or last activity",
+        "Does not duplicate Column B (Amount reference)"
+      ],
+      "core_criteria": {
+        "valid_references": "Must only reference col-A and/or col-B",
+        "no_circular_deps": "New column depends on existing columns only",
+        "correct_type": "AI with SINGLE_SELECT (not Formula — risk assessment requires multi-field reasoning)",
+        "relevant_to_role": "Risk assessment is relevant to sales reps managing pipeline",
+        "no_duplication": "Must not duplicate the Amount reference column",
+        "format_matches_use": "SINGLE_SELECT enables filtering and sorting by risk level"
+      }
+    },
+    {
+      "id": 2,
+      "name": "csm-check-in-email",
+      "prompt": "I'm a Customer Success Manager. My Grid has: Column A: Accounts (Object) with Name, Industry, OwnerId, Description; Column B: Account Summary (PromptTemplate) — AI-generated account narrative; Column C: Related Cases (Object, SOQL filtered by AccountId); Column D: Case Trend Analysis (AI) — narrative summary of case patterns. I want to reach out to my customers. What should I add?",
+      "context": {
+        "userRole": "Customer Success Manager",
+        "gridState": {
+          "columns": [
+            {"name": "Accounts", "type": "Object", "id": "col-A"},
+            {"name": "Account Summary", "type": "PromptTemplate", "id": "col-B"},
+            {"name": "Related Cases", "type": "Object", "id": "col-C"},
+            {"name": "Case Trend Analysis", "type": "Ai", "id": "col-D"}
+          ]
+        }
+      },
+      "expected_output": "AI column (PLAIN_TEXT) for drafting check-in emails, referencing Account Name and Case Trend Analysis",
+      "expectations": [
+        "Suggests an AI column with PLAIN_TEXT response format (email content needs free-form text)",
+        "References existing columns (Account Name from col-A, Case Trend Analysis col-D)",
+        "Does not hallucinate a column that doesn't exist",
+        "Does not duplicate Account Summary (col-B) — email is different from narrative summary",
+        "Prompt includes tone/style guidance for customer-facing communication",
+        "Relevant to CSM role — check-in emails are a core CSM workflow"
+      ],
+      "core_criteria": {
+        "valid_references": "Must only reference col-A through col-D",
+        "no_circular_deps": "New column depends on existing columns only",
+        "correct_type": "AI with PLAIN_TEXT (email content is free-form, not categorical)",
+        "relevant_to_role": "Customer check-in emails are a core CSM activity",
+        "no_duplication": "Must not duplicate Account Summary — this is an email, not a summary",
+        "format_matches_use": "PLAIN_TEXT is correct for drafted email content"
+      }
+    },
+    {
+      "id": 3,
+      "name": "revops-data-quality-flag",
+      "prompt": "I'm in Revenue Operations. I have a Grid with: Column A: Open Opportunities (Object) with Name, StageName, Amount, CloseDate, NextStep, LastActivityDate, ForecastCategoryName, OwnerId (filtered: IsClosed = false); Column B: Opps.CloseDate (Reference); Column C: Opps.Amount (Reference); Column D: Opps.ForecastCategoryName (Reference). I need to flag data quality issues in our pipeline. What column should I add?",
+      "context": {
+        "userRole": "Revenue Operations",
+        "gridState": {
+          "columns": [
+            {"name": "Open Opportunities", "type": "Object", "id": "col-A"},
+            {"name": "CloseDate", "type": "Reference", "id": "col-B"},
+            {"name": "Amount", "type": "Reference", "id": "col-C"},
+            {"name": "ForecastCategoryName", "type": "Reference", "id": "col-D"}
+          ]
+        }
+      },
+      "expected_output": "AI column with SINGLE_SELECT (Clean/Minor Issues/Needs Fix) that audits opportunity data quality",
+      "expectations": [
+        "Suggests an AI column (not Formula — quality checks require contextual judgment)",
+        "Uses SINGLE_SELECT with quality-level options (e.g., Clean/Minor Issues/Needs Fix)",
+        "References Column A (Open Opportunities)",
+        "Prompt enumerates specific quality checks (missing Amount, past CloseDate, no NextStep, etc.)",
+        "Does not suggest a sales outreach email (irrelevant to RevOps role)",
+        "Does not duplicate the Reference columns — synthesizes across all fields"
+      ],
+      "core_criteria": {
+        "valid_references": "Must only reference col-A through col-D",
+        "no_circular_deps": "New column depends on existing columns only",
+        "correct_type": "AI with SINGLE_SELECT (quality flag enables RevOps to filter and action immediately)",
+        "relevant_to_role": "Data quality auditing is a core RevOps function",
+        "no_duplication": "Must not duplicate individual Reference columns — this synthesizes across them",
+        "format_matches_use": "SINGLE_SELECT enables filtering to 'Needs Fix' for immediate triage"
+      }
+    },
+    {
+      "id": 4,
+      "name": "sales-rep-competitive-intel",
+      "prompt": "I'm a sales rep researching my accounts. My Grid has: Column A: Accounts (Object) with Name, Industry, Website, NumberOfEmployees, Description; Column B: Company Description (AI, web search enabled) — 3-sentence company overview. There's also a prompt template available called competitor_battlecard_generator that takes an Account as input. What column should I add next?",
+      "context": {
+        "userRole": "Sales Rep",
+        "gridState": {
+          "columns": [
+            {"name": "Accounts", "type": "Object", "id": "col-A"},
+            {"name": "Company Description", "type": "Ai", "id": "col-B"}
+          ]
+        },
+        "availablePromptTemplates": ["competitor_battlecard_generator (takes Account as input)"]
+      },
+      "expected_output": "AI column with web search for competitor intel (identifying vendor stack), NOT the battlecard template yet — competitor identification is a prerequisite to battlecards",
+      "expectations": [
+        "Suggests an AI column (not PromptTemplate for battlecard yet — competitor identification comes first)",
+        "Uses web search capability for researching competitor/vendor information",
+        "References Column A (Accounts) for company name and industry",
+        "Does not duplicate Column B (Company Description) — this identifies competitors, not describes the company",
+        "Does not hallucinate columns that don't exist",
+        "Acknowledges the battlecard template exists but explains why competitor ID comes first"
+      ],
+      "core_criteria": {
+        "valid_references": "Must only reference col-A and/or col-B",
+        "no_circular_deps": "New column depends on existing columns only",
+        "correct_type": "AI with web search — competitor research requires external data not in CRM",
+        "relevant_to_role": "Competitive intelligence is directly valuable for sales reps",
+        "no_duplication": "Must not duplicate Company Description — different purpose (competitors vs company)",
+        "format_matches_use": "PLAIN_TEXT or structured output appropriate for research findings"
+      }
+    },
+    {
+      "id": 5,
+      "name": "fail-hallucinated-column-ref",
+      "prompt": "I'm a sales rep. My Grid has Column A: Opportunities (Object) with StageName, Amount, CloseDate, Probability, NextStep, LastActivityDate, and Column B: Opportunities.Amount (Reference). Suggest a deal risk column.",
+      "context": {
+        "userRole": "Sales Rep",
+        "gridState": {
+          "columns": [
+            {"name": "Opportunities", "type": "Object", "id": "col-A"},
+            {"name": "Amount", "type": "Reference", "id": "col-B"}
+          ]
+        }
+      },
+      "expected_output": "Should reference only col-A and col-B. FAIL if it references 'Account Health Score' or any other non-existent column.",
+      "expectations": [
+        "Does NOT reference any column other than col-A or col-B",
+        "Does NOT mention 'Account Health Score' or any other non-existent column in references",
+        "Only uses column IDs that were provided in the grid state"
+      ],
+      "negative_test": true,
+      "failure_tag": "hallucinated_column_ref"
+    },
+    {
+      "id": 6,
+      "name": "fail-wrong-column-type",
+      "prompt": "I'm a sales rep. My Grid has Column A: Opportunities (Object) with StageName, Amount, CloseDate, Probability, NextStep, LastActivityDate, and Column B: Opportunities.Amount (Reference). I want to assess deal risk. Create a Formula column for this.",
+      "context": {
+        "userRole": "Sales Rep",
+        "gridState": {
+          "columns": [
+            {"name": "Opportunities", "type": "Object", "id": "col-A"},
+            {"name": "Amount", "type": "Reference", "id": "col-B"}
+          ]
+        }
+      },
+      "expected_output": "Should recommend AI instead of Formula — risk assessment requires reasoning across multiple fields, not a single numeric threshold",
+      "expectations": [
+        "Recommends AI column type instead of or in addition to Formula",
+        "Explains why Formula is insufficient (risk requires multi-field contextual judgment)",
+        "If it creates a Formula, it should at minimum reference multiple fields (not just Amount)"
+      ],
+      "negative_test": true,
+      "failure_tag": "wrong_column_type"
+    },
+    {
+      "id": 7,
+      "name": "fail-circular-dependency",
+      "prompt": "I'm a CSM. My Grid has: Column A: Accounts (Object); Column B: Account Summary (PromptTemplate); Column C: Related Cases (Object); Column D: Case Trend Analysis (AI). I want to create a Check-In Email column that references an Email Quality Score column that I'll create after.",
+      "context": {
+        "userRole": "CSM",
+        "gridState": {
+          "columns": [
+            {"name": "Accounts", "type": "Object", "id": "col-A"},
+            {"name": "Account Summary", "type": "PromptTemplate", "id": "col-B"},
+            {"name": "Related Cases", "type": "Object", "id": "col-C"},
+            {"name": "Case Trend Analysis", "type": "Ai", "id": "col-D"}
+          ]
+        }
+      },
+      "expected_output": "Should NOT reference a future 'Email Quality Score' column. Should only reference existing columns.",
+      "expectations": [
+        "Does NOT reference an 'Email Quality Score' column that doesn't exist yet",
+        "Only references columns col-A through col-D",
+        "Explains that you cannot reference a column that depends on the column being created"
+      ],
+      "negative_test": true,
+      "failure_tag": "circular_dependency"
+    },
+    {
+      "id": 8,
+      "name": "fail-duplicates-existing",
+      "prompt": "I'm a CSM. My Grid has: Column A: Accounts (Object) with Name, Industry, Description; Column B: Account Summary (PromptTemplate) — AI-generated account narrative; Column C: Related Cases (Object); Column D: Case Trend Analysis (AI). Can you add an Account Overview column that gives me a narrative summary of each account?",
+      "context": {
+        "userRole": "CSM",
+        "gridState": {
+          "columns": [
+            {"name": "Accounts", "type": "Object", "id": "col-A"},
+            {"name": "Account Summary", "type": "PromptTemplate", "id": "col-B"},
+            {"name": "Related Cases", "type": "Object", "id": "col-C"},
+            {"name": "Case Trend Analysis", "type": "Ai", "id": "col-D"}
+          ]
+        }
+      },
+      "expected_output": "Should identify that Account Summary (col-B) already provides a narrative account summary and suggest something different",
+      "expectations": [
+        "Identifies that Account Summary column already exists and serves a similar purpose",
+        "Either declines to create a duplicate or suggests a meaningfully different column",
+        "Does not create a column with essentially the same prompt/purpose as Account Summary"
+      ],
+      "negative_test": true,
+      "failure_tag": "duplicates_existing_column"
+    },
+    {
+      "id": 9,
+      "name": "fail-irrelevant-to-role",
+      "prompt": "I'm in Revenue Operations. My Grid has: Column A: Open Opportunities (Object) with Name, StageName, Amount, CloseDate, NextStep, LastActivityDate, ForecastCategoryName, OwnerId; Column B: CloseDate (Reference); Column C: Amount (Reference); Column D: ForecastCategoryName (Reference). What column should I add?",
+      "context": {
+        "userRole": "Revenue Operations",
+        "gridState": {
+          "columns": [
+            {"name": "Open Opportunities", "type": "Object", "id": "col-A"},
+            {"name": "CloseDate", "type": "Reference", "id": "col-B"},
+            {"name": "Amount", "type": "Reference", "id": "col-C"},
+            {"name": "ForecastCategoryName", "type": "Reference", "id": "col-D"}
+          ]
+        }
+      },
+      "expected_output": "Should suggest a data quality or pipeline analysis column (relevant to RevOps), NOT a sales outreach email",
+      "expectations": [
+        "Does NOT suggest a 'Personalized Outreach Email' or any sales rep-focused action",
+        "Suggests something relevant to RevOps (data quality, pipeline health, forecast accuracy)",
+        "The suggestion aligns with the grid state (pipeline audit data, not customer outreach)"
+      ],
+      "negative_test": true,
+      "failure_tag": "irrelevant_to_role"
+    },
+    {
+      "id": 10,
+      "name": "fail-wrong-response-format",
+      "prompt": "I'm a sales rep. My Grid has: Column A: Accounts (Object) with Name, Industry, Website, NumberOfEmployees, Description; Column B: Company Description (AI, web search) — 3-sentence overview. I want to prioritize which accounts to reach out to. Add an Account Priority column.",
+      "context": {
+        "userRole": "Sales Rep",
+        "gridState": {
+          "columns": [
+            {"name": "Accounts", "type": "Object", "id": "col-A"},
+            {"name": "Company Description", "type": "Ai", "id": "col-B"}
+          ]
+        }
+      },
+      "expected_output": "Should use SINGLE_SELECT (High/Medium/Low) not free-text PLAIN_TEXT — priority is for filtering and quick scanning",
+      "expectations": [
+        "Uses SINGLE_SELECT response format (not PLAIN_TEXT)",
+        "Options are scannable priority levels (e.g., High/Medium/Low)",
+        "Does not generate a paragraph of reasoning as the output — that defeats the filtering purpose"
+      ],
+      "negative_test": true,
+      "failure_tag": "wrong_response_format"
+    },
+    {
+      "id": 11,
+      "name": "fail-dead-end-output",
+      "prompt": "I'm in Revenue Operations. My Grid has: Column A: Open Opportunities (Object) with many fields; Column B: CloseDate (Reference); Column C: Amount (Reference); Column D: ForecastCategoryName (Reference). I want to see the raw opportunity data. Add a column that extracts the full JSON.",
+      "context": {
+        "userRole": "Revenue Operations",
+        "gridState": {
+          "columns": [
+            {"name": "Open Opportunities", "type": "Object", "id": "col-A"},
+            {"name": "CloseDate", "type": "Reference", "id": "col-B"},
+            {"name": "Amount", "type": "Reference", "id": "col-C"},
+            {"name": "ForecastCategoryName", "type": "Reference", "id": "col-D"}
+          ]
+        }
+      },
+      "expected_output": "Should suggest something actionable rather than a raw JSON dump. A Reference column extracting the full object adds no value.",
+      "expectations": [
+        "Does NOT create a Reference column with jsonPath '$' (full object extraction)",
+        "Suggests something actionable instead (analysis, quality check, specific field extraction)",
+        "Explains why a raw JSON dump is not useful as a column output"
+      ],
+      "negative_test": true,
+      "failure_tag": "dead_end_output"
+    },
+    {
+      "id": 12,
+      "name": "fail-ignores-available-sot",
+      "prompt": "I'm a sales rep. My Grid has: Column A: Accounts (Object) with Name, Industry, Website, NumberOfEmployees, Description; Column B: Company Description (AI, web search). There's a prompt template called competitor_battlecard_generator that takes Account as input. I want competitive battlecards for each account.",
+      "context": {
+        "userRole": "Sales Rep",
+        "gridState": {
+          "columns": [
+            {"name": "Accounts", "type": "Object", "id": "col-A"},
+            {"name": "Company Description", "type": "Ai", "id": "col-B"}
+          ]
+        },
+        "availablePromptTemplates": ["competitor_battlecard_generator (takes Account as input)"]
+      },
+      "expected_output": "Should acknowledge and consider the available competitor_battlecard_generator prompt template rather than creating a generic AI column from scratch",
+      "expectations": [
+        "Acknowledges the competitor_battlecard_generator prompt template exists",
+        "Either uses it (PromptTemplate column) or explains why the AI approach is better for this specific case",
+        "Does NOT ignore the available source of truth entirely"
+      ],
+      "negative_test": true,
+      "failure_tag": "ignores_available_sot"
+    }
+  ]
+}

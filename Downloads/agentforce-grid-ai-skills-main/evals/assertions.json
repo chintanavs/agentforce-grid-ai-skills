@@ -1,0 +1,82 @@
+{
+  "core_assertions": [
+    {
+      "id": "CORE-1",
+      "name": "valid_references",
+      "description": "All referenced columns must exist in the provided grid state",
+      "check": "No column IDs or names are mentioned in references that don't appear in the grid state"
+    },
+    {
+      "id": "CORE-2",
+      "name": "no_circular_dependencies",
+      "description": "New column cannot reference a column that doesn't exist yet or that depends on it",
+      "check": "All referenced columns are from the existing grid state, not from columns being suggested"
+    },
+    {
+      "id": "CORE-3",
+      "name": "correct_column_type",
+      "description": "Column type matches the nature of the task",
+      "check": "AI for reasoning/generation, Formula for deterministic computation, Reference for extraction, SINGLE_SELECT for categorization"
+    },
+    {
+      "id": "CORE-4",
+      "name": "relevant_to_role",
+      "description": "Suggestion is relevant to the stated user role",
+      "check": "Column purpose aligns with stated role responsibilities"
+    },
+    {
+      "id": "CORE-5",
+      "name": "no_duplication",
+      "description": "Suggested column does not duplicate an existing column's purpose",
+      "check": "No existing column already serves the same function"
+    },
+    {
+      "id": "CORE-6",
+      "name": "format_matches_use",
+      "description": "Response format is appropriate for how the output will be used",
+      "check": "SINGLE_SELECT for filtering/sorting, PLAIN_TEXT for free-form content, Formula for computation"
+    }
+  ],
+  "diagnostic_assertions": [
+    {
+      "id": "DIAG-1",
+      "name": "references_existing_data",
+      "description": "Suggestion references data already in the grid"
+    },
+    {
+      "id": "DIAG-2",
+      "name": "correct_data_flow",
+      "description": "Data flows in the right direction (analysis of existing data, not importing new)"
+    },
+    {
+      "id": "DIAG-3",
+      "name": "actionable_output",
+      "description": "Output is actionable, not a dead-end data dump"
+    },
+    {
+      "id": "DIAG-4",
+      "name": "prompt_specificity",
+      "description": "AI prompt references specific fields rather than vague instructions"
+    },
+    {
+      "id": "DIAG-5",
+      "name": "single_select_quality",
+      "description": "SINGLE_SELECT options are mutually exclusive, meaningful, and scannable"
+    },
+    {
+      "id": "DIAG-6",
+      "name": "action_type_appropriateness",
+      "description": "Action type (AI, Formula, Reference) matches the task complexity"
+    },
+    {
+      "id": "DIAG-7",
+      "name": "source_of_truth_leverage",
+      "description": "Leverages available prompt templates, flows, and existing data sources"
+    },
+    {
+      "id": "DIAG-8",
+      "name": "pipeline_completeness",
+      "description": "Suggestion fills a genuine gap in the grid pipeline"
+    }
+  ]
+}

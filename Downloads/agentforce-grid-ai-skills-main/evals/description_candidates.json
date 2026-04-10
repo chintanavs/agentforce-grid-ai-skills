@@ -1,0 +1,17 @@
+{
+  "current": "Agentforce Grid (AI Workbench) Connect API reference. Use when building or configuring Grid workbooks, worksheets, columns (AI, Agent, AgentTest, Formula, Object, PromptTemplate, Action, InvocableAction, Reference, Text, Evaluation, DataModelObject), evaluations, or calling /services/data/v66.0/public/grid endpoints. Covers column configurations, evaluation types, paste data format, and common patterns for agent testing, data enrichment, and batch processing.",
+  "candidates": [
+    {
+      "id": 1,
+      "description": "Use this skill to build, configure, and troubleshoot Agentforce Grid (AI Workbench) workbooks and worksheets. Covers creating and editing columns (AI, Agent, AgentTest, Formula, Object, PromptTemplate, InvocableAction, Reference, Text, Evaluation, DataModelObject), importing CSVs, pasting data, running evaluations, and processing cells. Use for: testing Agentforce agents with utterances and evaluations, enriching Salesforce data with AI columns, querying SObjects or Data Cloud, comparing agent versions, building formula or reference columns, and debugging column config errors. Do NOT use for general Salesforce admin tasks like Apex triggers, Flows, dashboards, reports, or validation rules."
+    },
+    {
+      "id": 2,
+      "description": "Use this skill when the user wants to work with Agentforce Grid or AI Workbench -- the spreadsheet-like interface for AI operations in Salesforce. Triggers include: creating or managing workbooks and worksheets; adding or editing columns (AI, Agent, AgentTest, Evaluation, Formula, Object, Reference, Text, PromptTemplate, InvocableAction, DataModelObject); testing agents with utterances; evaluating agent or prompt responses; enriching records with AI; importing CSV data; configuring formulas; comparing agent versions; or troubleshooting column errors. This skill handles the Grid Connect API and MCP tools. Do NOT use for standalone SOQL queries, Apex code, Flows, dashboards, reports, Einstein Bots, or other non-Grid Salesforce features."
+    },
+    {
+      "id": 3,
+      "description": "Use this skill whenever users mention Grid, AI Workbench, workbooks, worksheets, or Grid columns. Also use when users want to: test an Agentforce agent with different utterances or evaluate agent responses; enrich Salesforce records using AI-generated content; add AI, Formula, Evaluation, Object, Reference, or Text columns to a worksheet; import CSV data into a Grid; compare agent versions with evaluation columns; query SObjects or Data Cloud DMOs in a grid context; or debug a failing AI/Agent column config. This skill manages the Grid Connect API for column creation, cell operations, row execution, and paste/import workflows. Do NOT trigger for generic Salesforce tasks (Apex, Flows, dashboards, reports, validation rules, Einstein Bots)."
+    }
+  ]
+}
