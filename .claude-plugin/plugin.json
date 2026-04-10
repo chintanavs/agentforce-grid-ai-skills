@@ -1,0 +1,10 @@
+{
+  "name": "agentforce-grid",
+  "displayName": "Agentforce Grid",
+  "version": "1.0.0",
+  "description": "Complete toolkit for Agentforce Grid (AI Workbench): API skills, specialized agents, MCP tools, and workflow commands.",
+  "skills": "./skills/",
+  "agents": "./agents/",
+  "commands": "./commands/",
+  "hooks": "./hooks/hooks.json"
+}
