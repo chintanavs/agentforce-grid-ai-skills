@@ -29,15 +29,74 @@ This skill helps configure Agentforce Grid worksheet columns and provides API gu
 - Multi-turn conversation testing patterns
 - 17 active LLM models across OpenAI, Anthropic (via Amazon Bedrock), Google (via Vertex AI), and Amazon providers
 
-## Installation
+## Quick Install
 
-Copy the `.claude/skills/agentforce-grid` directory to your project's `.claude/skills/` folder.
+One command installs everything — Salesforce CLI, MCP server (65+ tools), and Grid skills:
 
 ```bash
-# Clone and copy
-git clone git@git.soma.salesforce.com:tmcgrath/agentforce-grid-ai-skills.git
-cp -r agentforce-grid-ai-skills/.claude/skills/agentforce-grid your-project/.claude/skills/
+curl -sSL https://raw.githubusercontent.com/chintanavs/agentforce-grid-ai-skills/main/install.sh | bash
 ```
+
+Then authenticate to your org:
+
+```bash
+sf org login web --set-default --instance-url https://your-instance.salesforce.com/
+```
+
+Verify: open Claude Code and ask *"List my Grid workbooks"*.
+
+### Options
+
+```bash
+# Target a specific org
+curl -sSL ... | bash -s -- --org my-org-alias
+
+# Skip components you already have
+curl -sSL ... | bash -s -- --skip-sf        # already have sf CLI
+curl -sSL ... | bash -s -- --skip-mcp       # only want skills
+curl -sSL ... | bash -s -- --skip-skills    # only want MCP
+```
+
+### Manual Installation
+
+<details>
+<summary>Step-by-step if you prefer not to use the installer</summary>
+
+**1. Salesforce CLI**
+
+```bash
+brew install sf
+sf org login web --set-default --instance-url https://your-instance.salesforce.com/
+```
+
+**2. MCP Server**
+
+```bash
+git clone https://github.com/chintanavs/agentforce-grid-mcp.git
+cd agentforce-grid-mcp && npm install && npm run build
+```
+
+Add to `~/.claude/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "grid-connect": {
+      "command": "node",
+      "args": ["/path/to/agentforce-grid-mcp/dist/index.js"]
+    }
+  }
+}
+```
+
+**3. Skills**
+
+```bash
+git clone https://github.com/chintanavs/agentforce-grid-ai-skills.git
+cp -r agentforce-grid-ai-skills/agentforce-grid your-project/.claude/skills/
+```
+
+</details>
 
 ## Usage
 
