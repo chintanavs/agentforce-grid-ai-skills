@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__grid-connect-mcp__add_column|mcp__grid-connect-mcp__edit_column",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/skills/agentforce-grid/hooks/validate-config.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "mcp__grid-connect-mcp__*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/skills/agentforce-grid/hooks/post-api-call.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

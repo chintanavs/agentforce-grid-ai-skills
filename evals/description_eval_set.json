@@ -1,0 +1,25 @@
+{
+  "skill_name": "agentforce-grid",
+  "queries": [
+    {"query": "I need to test my Agentforce agent with different utterances", "should_trigger": true},
+    {"query": "Set up a grid to evaluate our support bot's responses", "should_trigger": true},
+    {"query": "Create a workbook to analyze opportunity pipeline data quality", "should_trigger": true},
+    {"query": "How do I add a SINGLE_SELECT column to classify account priority?", "should_trigger": true},
+    {"query": "I want to enrich my account data with AI-generated competitive intelligence", "should_trigger": true},
+    {"query": "Help me build an agent testing pipeline with evaluations", "should_trigger": true},
+    {"query": "Configure a formula column that concatenates first and last name", "should_trigger": true},
+    {"query": "Import a CSV of test utterances into a Grid worksheet", "should_trigger": true},
+    {"query": "My AI column keeps failing with a config error, what's wrong?", "should_trigger": true},
+    {"query": "Compare two agent versions using Grid evaluation columns", "should_trigger": true},
+    {"query": "Write a Python script to analyze sales data", "should_trigger": false},
+    {"query": "How do I create an Apex trigger for Account updates?", "should_trigger": false},
+    {"query": "Help me set up a Salesforce Flow to send emails", "should_trigger": false},
+    {"query": "What's the best way to query Accounts using SOQL?", "should_trigger": false},
+    {"query": "Create a dashboard showing opportunity win rates", "should_trigger": false},
+    {"query": "I need to build a chatbot using Einstein Bots", "should_trigger": false},
+    {"query": "How do I configure a validation rule on the Opportunity object?", "should_trigger": false},
+    {"query": "Set up Einstein Next Best Action recommendations", "should_trigger": false},
+    {"query": "Help me write a unit test for my Apex class", "should_trigger": false},
+    {"query": "Create a report type for cases with related activities", "should_trigger": false}
+  ]
+}
